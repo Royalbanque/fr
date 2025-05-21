@@ -1,0 +1,2109 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banque Digitale - Tableau de bord</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #003366; /* Bleu foncé RBC */
+            --secondary-color: #D4AF37; /* Or */
+            --accent-color: #0056b3;
+            --danger-color: #dc3545;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+            --gray-color: #6c757d;
+            --white-color: #ffffff;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            display: grid;
+            grid-template-rows: auto 1fr auto;
+            min-height: 100vh;
+        }
+
+        .header {
+            background-color: var(--primary-color);
+            color: var(--white-color);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--box-shadow);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .logo img {
+            height: 40px;
+        }
+
+        .main-nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .main-nav a {
+            color: var(--white-color);
+            text-decoration: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+            padding: 0.5rem 0;
+        }
+
+        .main-nav a:hover, .main-nav .active a {
+            color: var(--secondary-color);
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            background-color: var(--secondary-color);
+            color: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .main-content {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 600;
+        }
+
+        .alert-danger {
+            background-color: rgba(220, 53, 69, 0.1);
+            color: var(--danger-color);
+            border-left: 4px solid var(--danger-color);
+        }
+
+        .account-summary {
+            margin-bottom: 2rem;
+        }
+
+        .account-summary h1 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--primary-color);
+        }
+
+        .balance-card {
+            background-color: var(--white-color);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--box-shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            transition: var(--transition);
+        }
+
+        .balance-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .balance-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .balance-info .label {
+            font-size: 0.9rem;
+            color: var(--gray-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .balance-info .amount {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .badge {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .badge-danger {
+            background-color: rgba(220, 53, 69, 0.1);
+            color: var(--danger-color);
+        }
+
+        .badge-success {
+            background-color: rgba(40, 167, 69, 0.1);
+            color: var(--success-color);
+        }
+
+        .account-holder {
+            text-align: right;
+        }
+
+        .account-holder .label {
+            font-size: 0.9rem;
+            color: var(--gray-color);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .account-holder .name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .account-holder .account-number {
+            font-family: monospace;
+            letter-spacing: 1px;
+            color: var(--gray-color);
+        }
+
+        .quick-actions {
+            margin-bottom: 2rem;
+        }
+
+        .quick-actions h2 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--primary-color);
+        }
+
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .action-card {
+            background-color: var(--white-color);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--box-shadow);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            text-decoration: none;
+            color: var(--primary-color);
+            transition: var(--transition);
+        }
+
+        .action-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            color: var(--accent-color);
+        }
+
+        .action-card .icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: rgba(0, 51, 102, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .recent-transactions {
+            margin-bottom: 2rem;
+        }
+
+        .recent-transactions h2 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--primary-color);
+        }
+
+        .transactions-list {
+            background-color: var(--white-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+        }
+
+        .transaction-item {
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+            transition: var(--transition);
+        }
+
+        .transaction-item:last-child {
+            border-bottom: none;
+        }
+
+        .transaction-item:hover {
+            background-color: #f9f9f9;
+        }
+
+        .transaction-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            font-size: 1rem;
+        }
+
+        .transaction-item.received .transaction-icon {
+            background-color: rgba(40, 167, 69, 0.1);
+            color: var(--success-color);
+        }
+
+        .transaction-item.sent .transaction-icon {
+            background-color: rgba(220, 53, 69, 0.1);
+            color: var(--danger-color);
+        }
+
+        .transaction-details {
+            flex: 1;
+        }
+
+        .transaction-details .description {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+
+        .transaction-details .date {
+            font-size: 0.85rem;
+            color: var(--gray-color);
+        }
+
+        .transaction-amount {
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .transaction-item.received .transaction-amount {
+            color: var(--success-color);
+        }
+
+        .transaction-item.sent .transaction-amount {
+            color: var(--danger-color);
+        }
+
+        .view-all {
+            display: inline-block;
+            margin-top: 1rem;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+        }
+
+        .view-all:hover {
+            color: var(--accent-color);
+            gap: 0.75rem;
+        }
+
+        .footer {
+            background-color: var(--primary-color);
+            color: var(--white-color);
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--white-color);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: var(--secondary-color);
+        }
+
+        .copyright {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Historique des transactions */
+        .page-header {
+            margin-bottom: 2rem;
+        }
+
+        .page-header h1 {
+            font-size: 1.75rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: var(--primary-color);
+        }
+
+        .page-header p {
+            color: var(--gray-color);
+        }
+
+        .filters {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+            align-items: flex-end;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            min-width: 200px;
+        }
+
+        .filter-group label {
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            color: var(--gray-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .filter-group select {
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-family: inherit;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--border-radius);
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent-color);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .transactions-table {
+            background-color: var(--white-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .table-header {
+            display: flex;
+            padding: 1rem 1.5rem;
+            background-color: #f8f9fa;
+            font-weight: 600;
+            border-bottom: 1px solid #eee;
+        }
+
+        .col-date {
+            width: 120px;
+        }
+
+        .col-description {
+            flex: 1;
+        }
+
+        .col-amount {
+            width: 120px;
+            text-align: right;
+        }
+
+        .col-status {
+            width: 100px;
+            text-align: center;
+        }
+
+        .transaction-detail {
+            display: flex;
+            padding: 1rem 1.5rem;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+        }
+
+        .transaction-detail:last-child {
+            border-bottom: none;
+        }
+
+        .transaction-detail:hover {
+            background-color: #f9f9f9;
+        }
+
+        .transaction-detail .col-description {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .transaction-detail .col-description small {
+            font-size: 0.85rem;
+            color: var(--gray-color);
+            margin-top: 0.25rem;
+        }
+
+        .transaction-detail.received .col-amount {
+            color: var(--success-color);
+            font-weight: 700;
+        }
+
+        .transaction-detail.sent .col-amount {
+            color: var(--danger-color);
+            font-weight: 700;
+        }
+
+        .transaction-more {
+            display: none;
+            width: 100%;
+            padding: 1rem 0 0;
+            grid-column: 1 / -1;
+        }
+
+        .transaction-detail.active .transaction-more {
+            display: block;
+        }
+
+        .more-details {
+            background-color: #f8f9fa;
+            padding: 1rem;
+            border-radius: var(--border-radius);
+        }
+
+        .more-details p {
+            margin-bottom: 0.5rem;
+        }
+
+        .more-details p:last-child {
+            margin-bottom: 0;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .pagination span {
+            color: var(--gray-color);
+        }
+
+        /* Page de virement */
+        .transfer-form-container {
+            background-color: var(--white-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .transfer-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .transfer-steps::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: #eee;
+            z-index: 1;
+        }
+
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .step span {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: #eee;
+            color: var(--gray-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .step.active span {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .transfer-form {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .form-group input, .form-group select {
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-family: inherit;
+        }
+
+        .form-hint {
+            color: var(--gray-color);
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        .input-with-symbol {
+            position: relative;
+        }
+
+        .input-with-symbol span {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-weight: 600;
+            color: var(--gray-color);
+        }
+
+        .input-with-symbol input {
+            padding-left: 40px;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .transfer-info {
+            background-color: rgba(0, 51, 102, 0.05);
+            border-left: 4px solid var(--primary-color);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+        }
+
+        .transfer-info h3 {
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--primary-color);
+        }
+
+        .transfer-info ul {
+            list-style-position: inside;
+        }
+
+        .transfer-info li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Page Mes informations */
+        .info-card {
+            background-color: var(--white-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .info-card h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .info-item {
+            margin-bottom: 1rem;
+        }
+
+        .info-item .label {
+            font-size: 0.9rem;
+            color: var(--gray-color);
+            margin-bottom: 0.25rem;
+        }
+
+        .info-item .value {
+            font-weight: 600;
+        }
+
+        .account-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .account-status .status {
+            font-weight: 600;
+        }
+
+        .status-active {
+            color: var(--success-color);
+        }
+
+        .status-blocked {
+            color: var(--danger-color);
+        }
+
+        .security-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        /* Page Assistance */
+        .assistance-container {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 2rem;
+        }
+
+        .faq-section {
+            background-color: var(--white-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 2rem;
+        }
+
+        .faq-item {
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 1.5rem;
+        }
+
+        .faq-item:last-child {
+            margin-bottom: 0;
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .faq-question {
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .faq-answer {
+            display: none;
+        }
+
+        .faq-item.active .faq-answer {
+            display: block;
+        }
+
+        .chat-section {
+            background-color: var(--white-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .chat-header .avatar {
+            width: 50px;
+            height: 50px;
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .chat-header .agent-info h3 {
+            margin-bottom: 0.25rem;
+        }
+
+        .chat-header .agent-info p {
+            font-size: 0.9rem;
+            color: var(--gray-color);
+        }
+
+        .chat-messages {
+            flex: 1;
+            margin-bottom: 1.5rem;
+            overflow-y: auto;
+            max-height: 400px;
+            padding-right: 0.5rem;
+        }
+
+        .message {
+            margin-bottom: 1rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .message-agent .message-content {
+            align-self: flex-start;
+            background-color: #f0f4f8;
+            border-radius: 0 1rem 1rem 1rem;
+        }
+
+        .message-user .message-content {
+            align-self: flex-end;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 1rem 0 1rem 1rem;
+        }
+
+        .message-content {
+            padding: 0.75rem 1rem;
+            max-width: 80%;
+            margin-bottom: 0.25rem;
+        }
+
+        .message-time {
+            font-size: 0.75rem;
+            color: var(--gray-color);
+        }
+
+        .chat-input {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+        }
+
+        .chat-input button {
+            padding: 0 1.5rem;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+        }
+
+        .quick-questions {
+            margin-top: 1.5rem;
+        }
+
+        .quick-questions h4 {
+            margin-bottom: 1rem;
+            color: var(--gray-color);
+        }
+
+        .question-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .question-btn {
+            padding: 0.5rem 1rem;
+            background-color: #f0f4f8;
+            border: none;
+            border-radius: 1rem;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .question-btn:hover {
+            background-color: #e0e8f0;
+        }
+
+        /* Page Paramètres */
+        .settings-grid {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 2rem;
+        }
+
+        .settings-menu {
+            background-color: var(--white-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 1.5rem;
+        }
+
+        .settings-menu h3 {
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        .settings-menu ul {
+            list-style: none;
+        }
+
+        .settings-menu li {
+            margin-bottom: 0.5rem;
+        }
+
+        .settings-menu a {
+            display: block;
+            padding: 0.75rem;
+            text-decoration: none;
+            color: var(--dark-color);
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+
+        .settings-menu a:hover, .settings-menu a.active {
+            background-color: rgba(0, 51, 102, 0.1);
+            color: var(--primary-color);
+        }
+
+        .settings-menu a i {
+            margin-right: 0.75rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        .settings-content {
+            background-color: var(--white-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 2rem;
+        }
+
+        .settings-content h2 {
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .security-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .security-item:last-child {
+            border-bottom: none;
+        }
+
+        .security-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .security-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(0, 51, 102, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+        }
+
+        .security-details h3 {
+            margin-bottom: 0.25rem;
+        }
+
+        .security-details p {
+            font-size: 0.9rem;
+            color: var(--gray-color);
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: var(--transition);
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: var(--transition);
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--success-color);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        .login-history {
+            margin-top: 2rem;
+        }
+
+        .login-history h3 {
+            margin-bottom: 1rem;
+        }
+
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .history-table th, .history-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .history-table th {
+            font-weight: 600;
+            color: var(--gray-color);
+        }
+
+        .history-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .status-success {
+            color: var(--success-color);
+        }
+
+        .status-failed {
+            color: var(--danger-color);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .balance-card, .action-card, .transaction-item, .transaction-detail, .info-card, .security-item {
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .action-card:hover .icon {
+            animation: pulse 1s infinite;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .header {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+            
+            .main-nav ul {
+                gap: 1rem;
+            }
+            
+            .balance-card {
+                flex-direction: column;
+                text-align: center;
+                gap: 1.5rem;
+            }
+            
+            .account-holder {
+                text-align: center;
+            }
+
+            .assistance-container {
+                grid-template-columns: 1fr;
+            }
+
+            .settings-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .settings-menu {
+                margin-bottom: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 1rem;
+            }
+            
+            .actions-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .balance-info .amount {
+                font-size: 2rem;
+            }
+
+            .form-row {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .table-header, .transaction-detail {
+                flex-wrap: wrap;
+            }
+
+            .col-date, .col-status {
+                width: 50%;
+            }
+
+            .col-amount {
+                width: 100%;
+                text-align: left;
+                margin-top: 0.5rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .actions-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .main-nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .footer-links {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .filters {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .filter-group {
+                min-width: auto;
+            }
+        }
+
+        /* Gestion des pages */
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <span>Banque Digitale</span>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="#" class="nav-link" data-page="dashboard"><i class="fas fa-home"></i> Accueil</a></li>
+                    <li><a href="#" class="nav-link" data-page="history"><i class="fas fa-history"></i> Historique</a></li>
+                    <li><a href="#" class="nav-link" data-page="transfer"><i class="fas fa-exchange-alt"></i> Virements</a></li>
+                    <li><a href="#" class="nav-link" data-page="info"><i class="fas fa-user"></i> Mon compte</a></li>
+                    <li><a href="#" class="nav-link" data-page="settings"><i class="fas fa-cog"></i> Paramètres</a></li>
+                </ul>
+            </nav>
+            <div class="user-menu">
+                <span>Marie Émilie Brunet</span>
+                <div class="avatar">MEB</div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Page Tableau de bord -->
+            <div class="page active" id="dashboard">
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-circle"></i>
+                    Ce compte est actuellement bloqué. Veuillez contacter le service client pour plus d'informations.
+                </div>
+
+                <section class="account-summary">
+                    <h1><i class="fas fa-wallet"></i> Mon compte principal</h1>
+                    <div class="balance-card">
+                        <div class="balance-info">
+                            <span class="label">Solde disponible</span>
+                            <span class="amount">105 800 $ CA</span>
+                            <span class="status badge-danger">Compte bloqué</span>
+                        </div>
+                        <div class="account-holder">
+                            <span class="label">Titulaire du compte</span>
+                            <span class="name">Marie Émilie Brunet</span>
+                            <span class="account-number">•••• •••• •••• 7890</span>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="quick-actions">
+                    <h2><i class="fas fa-bolt"></i> Actions rapides</h2>
+                    <div class="actions-grid">
+                        <a href="#" class="action-card nav-link" data-page="transfer">
+                            <div class="icon"><i class="fas fa-plus-circle"></i></div>
+                            <span>Nouveau virement</span>
+                        </a>
+                        <a href="#" class="action-card nav-link" data-page="history">
+                            <div class="icon"><i class="fas fa-list-alt"></i></div>
+                            <span>Historique</span>
+                        </a>
+                        <a href="#" class="action-card nav-link" data-page="settings">
+                            <div class="icon"><i class="fas fa-cog"></i></div>
+                            <span>Paramètres</span>
+                        </a>
+                        <a href="#" class="action-card nav-link" data-page="assistance">
+                            <div class="icon"><i class="fas fa-envelope"></i></div>
+                            <span>Contacter</span>
+                        </a>
+                    </div>
+                </section>
+
+                <section class="recent-transactions">
+                    <h2><i class="fas fa-clock"></i> Dernières transactions</h2>
+                    <div class="transactions-list">
+                        <div class="transaction-item received">
+                            <div class="transaction-icon"><i class="fas fa-arrow-down"></i></div>
+                            <div class="transaction-details">
+                                <span class="description">Reçu de Mohamed Abadou</span>
+                                <span class="date">21 mai 2025</span>
+                            </div>
+                            <div class="transaction-amount">+32 500 $ CA</div>
+                        </div>
+                        <div class="transaction-item sent">
+                            <div class="transaction-icon"><i class="fas fa-arrow-up"></i></div>
+                            <div class="transaction-details">
+                                <span class="description">Virement à Hydro-Québec</span>
+                                <span class="date">10 mai 2023</span>
+                            </div>
+                            <div class="transaction-amount">-1 250 $ CA</div>
+                        </div>
+                        <div class="transaction-item received">
+                            <div class="transaction-icon"><i class="fas fa-arrow-down"></i></div>
+                            <div class="transaction-details">
+                                <span class="description">Dépôt direct - Salaire</span>
+                                <span class="date">1 mai 2023</span>
+                            </div>
+                            <div class="transaction-amount">+5 800 $ CA</div>
+                        </div>
+                    </div>
+                    <a href="#" class="view-all nav-link" data-page="history">Voir tout l'historique <i class="fas fa-chevron-right"></i></a>
+                </section>
+            </div>
+
+            <!-- Page Historique -->
+            <div class="page" id="history">
+                <div class="page-header">
+                    <h1><i class="fas fa-history"></i> Historique des transactions</h1>
+                    <div class="filters">
+                        <div class="filter-group">
+                            <label for="date-filter"><i class="fas fa-calendar-alt"></i> Date</label>
+                            <select id="date-filter">
+                                <option>Toutes les dates</option>
+                                <option>7 derniers jours</option>
+                                <option>30 derniers jours</option>
+                                <option>3 derniers mois</option>
+                                <option>Personnalisé</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="type-filter"><i class="fas fa-filter"></i> Type</label>
+                            <select id="type-filter">
+                                <option>Tous les types</option>
+                                <option>Virements entrants</option>
+                                <option>Virements sortants</option>
+                                <option>Paiements</option>
+                                <option>Dépôts</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="amount-filter"><i class="fas fa-dollar-sign"></i> Montant</label>
+                            <select id="amount-filter">
+                                <option>Tous les montants</option>
+                                <option>Moins de 500$</option>
+                                <option>500$ à 2 000$</option>
+                                <option>2 000$ à 10 000$</option>
+                                <option>Plus de 10 000$</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-primary"><i class="fas fa-search"></i> Appliquer</button>
+                    </div>
+                </div>
+
+                <div class="transactions-table">
+                    <div class="table-header">
+                        <div class="col-date">Date</div>
+                        <div class="col-description">Description</div>
+                        <div class="col-amount">Montant</div>
+                        <div class="col-status">Statut</div>
+                    </div>
+                    
+                    <div class="transaction-detail received">
+                        <div class="col-date">15 mai 2023</div>
+                        <div class="col-description">
+                            <strong>Reçu de Mohamed Abadou</strong>
+                            <small>UBA Banque Bamako •••• 6789</small>
+                        </div>
+                        <div class="col-amount">+32 500 $ CA</div>
+                        <div class="col-status"><span class="badge-success">Réussi</span></div>
+                        <div class="transaction-more">
+                            <div class="more-details">
+                                <p><strong>Solde précédent :</strong> 73 300 $ CA</p>
+                                <p><strong>Nouveau solde :</strong> 105 800 $ CA</p>
+                                <p><strong>Référence :</strong> TRX-20230515-7890</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="transaction-detail sent">
+                        <div class="col-date">10 mai 2023</div>
+                        <div class="col-description">
+                            <strong>Virement à Hydro-Québec</strong>
+                            <small>Paiement de facture •••• 3456</small>
+                        </div>
+                        <div class="col-amount">-1 250 $ CA</div>
+                        <div class="col-status"><span class="badge-success">Réussi</span></div>
+                        <div class="transaction-more">
+                            <div class="more-details">
+                                <p><strong>Solde précédent :</strong> 74 550 $ CA</p>
+                                <p><strong>Nouveau solde :</strong> 73 300 $ CA</p>
+                                <p><strong>Référence :</strong> TRX-20230510-4567</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="transaction-detail received">
+                        <div class="col-date">1 mai 2023</div>
+                        <div class="col-description">
+                            <strong>Dépôt direct - Salaire</strong>
+                            <small>Entreprise XYZ •••• 1234</small>
+                        </div>
+                        <div class="col-amount">+5 800 $ CA</div>
+                        <div class="col-status"><span class="badge-success">Réussi</span></div>
+                        <div class="transaction-more">
+                            <div class="more-details">
+                                <p><strong>Solde précédent :</strong> 68 750 $ CA</p>
+                                <p><strong>Nouveau solde :</strong> 74 550 $ CA</p>
+                                <p><strong>Référence :</strong> TRX-20230501-1234</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="transaction-detail sent">
+                        <div class="col-date">28 avril 2023</div>
+                        <div class="col-description">
+                            <strong>Virement à Bell Canada</strong>
+                            <small>Paiement de facture •••• 7890</small>
+                        </div>
+                        <div class="col-amount">-85 $ CA</div>
+                        <div class="col-status"><span class="badge-success">Réussi</span></div>
+                        <div class="transaction-more">
+                            <div class="more-details">
+                                <p><strong>Solde précédent :</strong> 68 835 $ CA</p>
+                                <p><strong>Nouveau solde :</strong> 68 750 $ CA</p>
+                                <p><strong>Référence :</strong> TRX-20230428-7890</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="pagination">
+                    <button class="btn btn-outline" disabled><i class="fas fa-chevron-left"></i> Précédent</button>
+                    <span>Page 1 sur 3</span>
+                    <button class="btn btn-outline">Suivant <i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+
+            <!-- Page Virement -->
+            <div class="page" id="transfer">
+                <div class="page-header">
+                    <h1><i class="fas fa-exchange-alt"></i> Effectuer un virement</h1>
+                    <p>Transférez de l'argent vers un autre compte bancaire au Canada ou à l'international.</p>
+                </div>
+                
+                <div class="transfer-form-container">
+                    <div class="transfer-steps">
+                        <div class="step active"><span>1</span> Informations</div>
+                        <div class="step"><span>2</span> Confirmation</div>
+                        <div class="step"><span>3</span> Validation</div>
+                        <div class="step"><span>4</span> Terminé</div>
+                    </div>
+                    
+                    <form class="transfer-form" id="transferForm">
+                        <div class="form-group">
+                            <label for="beneficiary-name">Nom du bénéficiaire</label>
+                            <input type="text" id="beneficiary-name" placeholder="Entrez le nom complet" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="iban">IBAN/Numéro de compte</label>
+                            <input type="text" id="iban" placeholder="Ex: CA12 3456 7890 1234 5678 9012" required>
+                            <small class="form-hint">Format international (IBAN) ou numéro de compte canadien</small>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="amount">Montant</label>
+                                <div class="input-with-symbol">
+                                    <span>$ CA</span>
+                                    <input type="number" id="amount" placeholder="0,00" min="1" step="0.01" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="date">Date de virement</label>
+                                <select id="date">
+                                    <option value="now">Immédiat</option>
+                                    <option value="date">Date spécifique</option>
+                                    <option value="recurring">Récurrent</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="reason">Motif (optionnel)</label>
+                            <input type="text" id="reason" placeholder="Ex: Remboursement, Cadeau...">
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-outline" id="cancelTransfer"><i class="fas fa-times"></i> Annuler</button>
+                            <button type="submit" class="btn btn-primary"><i class="fas fa-arrow-right"></i> Continuer</button>
+                        </div>
+                    </form>
+                </div>
+                
+                <div class="transfer-info">
+                    <h3><i class="fas fa-info-circle"></i> Informations importantes</h3>
+                    <ul>
+                        <li>Les virements internationaux peuvent prendre 2 à 5 jours ouvrables.</li>
+                        <li>Des frais peuvent s'appliquer pour les virements à l'international.</li>
+                        <li>Vérifiez toujours les informations du bénéficiaire avant de confirmer.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Page Mes informations -->
+            <div class="page" id="info">
+                <div class="page-header">
+                    <h1><i class="fas fa-user"></i> Mes informations</h1>
+                    <p>Gérez vos informations personnelles et les paramètres de votre compte.</p>
+                </div>
+                
+                <div class="info-card">
+                    <h2><i class="fas fa-id-card"></i> Informations personnelles</h2>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <div class="label">Nom complet</div>
+                            <div class="value">Marie Émilie Brunet</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="label">Date de naissance</div>
+                            <div class="value">15 mars 1985</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="label">Adresse email</div>
+                            <div class="value">marie.brunet@example.com</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="label">Téléphone</div>
+                            <div class="value">+1 (514) 555-0199</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="label">Adresse</div>
+                            <div class="value">
+                                1234 Rue Sherbrooke Ouest<br>
+                                Montréal, QC H3G 1H6<br>
+                                Canada
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <div class="label">Numéro d'assurance sociale</div>
+                            <div class="value">••• ••• •••</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="info-card">
+                    <h2><i class="fas fa-university"></i> Informations bancaires</h2>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <div class="label">Numéro de compte</div>
+                            <div class="value">•••• •••• •••• 7890</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="label">Type de compte</div>
+                            <div class="value">Compte chèque premium</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="label">Date d'ouverture</div>
+                            <div class="value">15 janvier 2015</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="label">Statut du compte</div>
+                            <div class="value account-status">
+                                <i class="fas fa-lock"></i>
+                                <span class="status status-blocked">Bloqué</span>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <div class="label">Solde actuel</div>
+                            <div class="value">105 800 $ CA</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="label">IBAN</div>
+                            <div class="value">CA76 7890 1234 5678 9012 3456</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="info-card">
+                    <h2><i class="fas fa-shield-alt"></i> Sécurité</h2>
+                    <div class="security-actions">
+                        <button class="btn btn-outline"><i class="fas fa-key"></i> Modifier le mot de passe</button>
+                        <button class="btn btn-outline"><i class="fas fa-user-lock"></i> Changer les identifiants</button>
+                        <button class="btn btn-outline"><i class="fas fa-question-circle"></i> Aide</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Page Assistance -->
+            <div class="page" id="assistance">
+                <div class="page-header">
+                    <h1><i class="fas fa-headset"></i> Assistance client</h1>
+                    <p>Nous sommes là pour vous aider 24h/24 et 7j/7.</p>
+                </div>
+                
+                <div class="assistance-container">
+                    <div class="faq-section">
+                        <h2><i class="fas fa-question-circle"></i> Questions fréquentes</h2>
+                        
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                Comment débloquer mon compte ?
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="faq-answer">
+                                <p>Si votre compte est bloqué, veuillez contacter immédiatement notre service client au 1-800-123-4567 ou visitez l'une de nos succursales avec une pièce d'identité valide pour vérification.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                Comment modifier mes informations personnelles ?
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="faq-answer">
+                                <p>Vous pouvez mettre à jour certaines informations directement depuis la section "Mes informations" de votre espace client. Pour les modifications importantes (nom, date de naissance), veuillez visiter une succursale avec les documents justificatifs nécessaires.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                Comment suivre un virement international ?
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="faq-answer">
+                                <p>Les virements internationaux peuvent être suivis dans la section "Historique des transactions". Cliquez sur la transaction pour voir les détails. Les virements SWIFT disposent d'un numéro de référence unique que vous pouvez fournir à notre service client pour un suivi plus précis.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                Quels sont les frais pour les virements internationaux ?
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="faq-answer">
+                                <p>Les frais varient selon le pays de destination et le montant transféré. En général, comptez entre 10$ CA et 50$ CA par transaction. Vous pouvez consulter notre grille tarifaire complète dans la section "Tarifs" de notre site web.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="chat-section">
+                        <div class="chat-header">
+                            <div class="avatar">CS</div>
+                            <div class="agent-info">
+                                <h3>Service client</h3>
+                                <p>En ligne - répond instantanément</p>
+                            </div>
+                        </div>
+                        
+                        <div class="chat-messages">
+                            <div class="message message-agent">
+                                <div class="message-content">
+                                    Bonjour Marie Émilie, comment puis-je vous aider aujourd'hui ?
+                                </div>
+                                <div class="message-time">12:04 PM</div>
+                            </div>
+                            
+                            <div class="message message-user">
+                                <div class="message-content">
+                                    Bonjour, mon compte est bloqué. Que dois-je faire ?
+                                </div>
+                                <div class="message-time">12:05 PM</div>
+                            </div>
+                            
+                            <div class="message message-agent">
+                                <div class="message-content">
+                                    Je vois que votre compte a été bloqué pour des raisons de sécurité. Pour le débloquer, vous devrez nous contacter au 1-800-123-4567 ou visiter une succursale avec une pièce d'identité valide.
+                                </div>
+                                <div class="message-time">12:06 PM</div>
+                            </div>
+                        </div>
+                        
+                        <div class="chat-input">
+                            <input type="text" placeholder="Tapez votre message...">
+                            <button><i class="fas fa-paper-plane"></i></button>
+                        </div>
+                        
+                        <div class="quick-questions">
+                            <h4>Questions rapides</h4>
+                            <div class="question-buttons">
+                                <button class="question-btn">Compte bloqué</button>
+                                <button class="question-btn">Virement international</button>
+                                <button class="question-btn">Mot de passe oublié</button>
+                                <button class="question-btn">Contact conseiller</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Page Paramètres -->
+            <div class="page" id="settings">
+                <div class="page-header">
+                    <h1><i class="fas fa-cog"></i> Paramètres et sécurité</h1>
+                    <p>Gérez les paramètres de votre compte et vos préférences de sécurité.</p>
+                </div>
+                
+                <div class="settings-grid">
+                    <div class="settings-menu">
+                        <h3>Paramètres</h3>
+                        <ul>
+                            <li><a href="#" class="settings-link active" data-section="security"><i class="fas fa-shield-alt"></i> Sécurité</a></li>
+                            <li><a href="#" class="settings-link" data-section="notifications"><i class="fas fa-bell"></i> Notifications</a></li>
+                            <li><a href="#" class="settings-link" data-section="privacy"><i class="fas fa-lock"></i> Confidentialité</a></li>
+                            <li><a href="#" class="settings-link" data-section="preferences"><i class="fas fa-sliders-h"></i> Préférences</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="settings-content">
+                        <div class="settings-section active" id="security-section">
+                            <h2><i class="fas fa-shield-alt"></i> Sécurité du compte</h2>
+                            
+                            <div class="security-item">
+                                <div class="security-info">
+                                    <div class="security-icon">
+                                        <i class="fas fa-mobile-alt"></i>
+                                    </div>
+                                    <div class="security-details">
+                                        <h3>Authentification à deux facteurs</h3>
+                                        <p>Ajoutez une couche de sécurité supplémentaire à votre compte</p>
+                                    </div>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            
+                            <div class="security-item">
+                                <div class="security-info">
+                                    <div class="security-icon">
+                                        <i class="fas fa-envelope"></i>
+                                    </div>
+                                    <div class="security-details">
+                                        <h3>Alertes par email</h3>
+                                        <p>Recevez des notifications pour les activités importantes</p>
+                                    </div>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            
+                            <div class="security-item">
+                                <div class="security-info">
+                                    <div class="security-icon">
+                                        <i class="fas fa-sms"></i>
+                                    </div>
+                                    <div class="security-details">
+                                        <h3>Alertes par SMS</h3>
+                                        <p>Recevez des notifications sur votre téléphone</p>
+                                    </div>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            
+                            <div class="security-item">
+                                <div class="security-info">
+                                    <div class="security-icon">
+                                        <i class="fas fa-ban"></i>
+                                    </div>
+                                    <div class="security-details">
+                                        <h3>Désactiver temporairement le compte</h3>
+                                        <p>Bloquez toutes les transactions si vous perdez votre téléphone ou votre carte</p>
+                                    </div>
+                                </div>
+                                <button class="btn btn-outline">Désactiver</button>
+                            </div>
+                            
+                            <div class="login-history">
+                                <h3><i class="fas fa-history"></i> Historique de connexion</h3>
+                                <table class="history-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Appareil</th>
+                                            <th>Localisation</th>
+                                            <th>Statut</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Aujourd'hui, 10:23 AM</td>
+                                            <td>iPhone (Safari)</td>
+                                            <td>Montréal, Canada</td>
+                                            <td class="status-success">Réussi</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Hier, 9:45 PM</td>
+                                            <td>MacBook Pro (Chrome)</td>
+                                            <td>Montréal, Canada</td>
+                                            <td class="status-success">Réussi</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Hier, 2:15 PM</td>
+                                            <td>Android (Firefox)</td>
+                                            <td>Toronto, Canada</td>
+                                            <td class="status-failed">Échoué</td>
+                                        </tr>
+                                        <tr>
+                                            <td>15 mai 2023, 11:30 AM</td>
+                                            <td>Windows (Edge)</td>
+                                            <td>Montréal, Canada</td>
+                                            <td class="status-success">Réussi</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-section" id="notifications-section">
+                            <h2><i class="fas fa-bell"></i> Notifications</h2>
+                            <p>Section des notifications - à implémenter</p>
+                        </div>
+                        
+                        <div class="settings-section" id="privacy-section">
+                            <h2><i class="fas fa-lock"></i> Confidentialité</h2>
+                            <p>Section confidentialité - à implémenter</p>
+                        </div>
+                        
+                        <div class="settings-section" id="preferences-section">
+                            <h2><i class="fas fa-sliders-h"></i> Préférences</h2>
+                            <p>Section préférences - à implémenter</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-links">
+                <a href="#">Sécurité</a>
+                <a href="#">Confidentialité</a>
+                <a href="#">Conditions d'utilisation</a>
+                <a href="#" class="nav-link" data-page="assistance">Assistance</a>
+            </div>
+            <div class="copyright">
+                © 2023 Banque Digitale. Tous droits réservés.
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Gestion de la navigation entre pages
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const pageId = this.getAttribute('data-page');
+                    showPage(pageId);
+                    
+                    // Mettre à jour le menu actif
+                    document.querySelectorAll('.main-nav li').forEach(item => {
+                        item.classList.remove('active');
+                    });
+                    this.parentElement.classList.add('active');
+                });
+            });
+            
+            // Afficher une page spécifique
+            function showPage(pageId) {
+                document.querySelectorAll('.page').forEach(page => {
+                    page.classList.remove('active');
+                });
+                
+                const activePage = document.getElementById(pageId);
+                if (activePage) {
+                    activePage.classList.add('active');
+                }
+                
+                // Animation pour les éléments de la page
+                animatePageElements();
+            }
+            
+            // Animation des éléments de la page active
+            function animatePageElements() {
+                const elements = document.querySelectorAll('.page.active .balance-card, .page.active .action-card, .page.active .transaction-item, .page.active .transaction-detail, .page.active .info-card, .page.active .security-item');
+                elements.forEach((el, index) => {
+                    el.style.opacity = '0';
+                    el.style.transform = 'translateY(20px)';
+                    setTimeout(() => {
+                        el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                        el.style.opacity = '1';
+                        el.style.transform = 'translateY(0)';
+                    }, 100 * index);
+                });
+            }
+            
+            // Gestion des FAQ
+            const faqItems = document.querySelectorAll('.faq-item');
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+                question.addEventListener('click', () => {
+                    item.classList.toggle('active');
+                });
+            });
+            
+            // Gestion des transactions détaillées
+            const transactionDetails = document.querySelectorAll('.transaction-detail');
+            transactionDetails.forEach(item => {
+                item.addEventListener('click', function() {
+                    this.classList.toggle('active');
+                });
+            });
+            
+            // Gestion des paramètres
+            const settingsLinks = document.querySelectorAll('.settings-link');
+            settingsLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const sectionId = this.getAttribute('data-section') + '-section';
+                    
+                    document.querySelectorAll('.settings-link').forEach(item => {
+                        item.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                    
+                    document.querySelectorAll('.settings-section').forEach(section => {
+                        section.classList.remove('active');
+                    });
+                    
+                    const activeSection = document.getElementById(sectionId);
+                    if (activeSection) {
+                        activeSection.classList.add('active');
+                    }
+                });
+            });
+            
+            // Gestion du formulaire de virement
+            const transferForm = document.getElementById('transferForm');
+            if (transferForm) {
+                transferForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    showBlockedAccountMessage();
+                });
+            }
+            
+            const cancelTransfer = document.getElementById('cancelTransfer');
+            if (cancelTransfer) {
+                cancelTransfer.addEventListener('click', function() {
+                    showPage('dashboard');
+                });
+            }
+            
+            // Simulation de chargement du solde
+            const balanceAmount = document.querySelector('.balance-info .amount');
+            if (balanceAmount) {
+                animateValue(balanceAmount, 0, 105800, 1500);
+            }
+            
+            // Animation du solde
+            function animateValue(element, start, end, duration) {
+                let startTimestamp = null;
+                const step = (timestamp) => {
+                    if (!startTimestamp) startTimestamp = timestamp;
+                    const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                    const value = Math.floor(progress * (end - start) + start);
+                    element.textContent = formatCurrency(value) + ' $ CA';
+                    if (progress < 1) {
+                        window.requestAnimationFrame(step);
+                    }
+                };
+                window.requestAnimationFrame(step);
+            }
+            
+            function formatCurrency(value) {
+                return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+            }
+            
+            // Message de compte bloqué
+            function showBlockedAccountMessage() {
+                const notification = document.createElement('div');
+                notification.className = 'notification';
+                notification.innerHTML = `
+                    <div class="notification-content">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <div>
+                            <h3>Compte bloqué</h3>
+                            <p>Votre compte est actuellement bloqué. Veuillez contacter le service client pour effectuer des opérations.</p>
+                            <button class="btn btn-primary" onclick="this.parentElement.parentElement.remove()">Compris</button>
+                            <a href="#" class="btn btn-outline nav-link" data-page="assistance">Contacter</a>
+                        </div>
+                    </div>
+                `;
+                
+                document.body.appendChild(notification);
+                
+                setTimeout(() => {
+                    notification.classList.add('show');
+                }, 10);
+            }
+            
+            // Chat simulé
+            const chatInput = document.querySelector('.chat-input input');
+            const chatMessages = document.querySelector('.chat-messages');
+            const questionButtons = document.querySelectorAll('.question-btn');
+            
+            if (chatInput) {
+                chatInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter' && this.value.trim() !== '') {
+                        sendMessage(this.value);
+                        this.value = '';
+                    }
+                });
+                
+                document.querySelector('.chat-input button').addEventListener('click', function() {
+                    if (chatInput.value.trim() !== '') {
+                        sendMessage(chatInput.value);
+                        chatInput.value = '';
+                    }
+                });
+            }
+            
+            questionButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    sendMessage(this.textContent);
+                });
+            });
+            
+            function sendMessage(text) {
+                const now = new Date();
+                const timeString = now.getHours() + ':' + (now.getMinutes() < 10 ? '0' : '') + now.getMinutes();
+                
+                const messageElement = document.createElement('div');
+                messageElement.className = 'message message-user';
+                messageElement.innerHTML = `
+                    <div class="message-content">${text}</div>
+                    <div class="message-time">${timeString}</div>
+                `;
+                
+                chatMessages.appendChild(messageElement);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+                
+                // Réponse automatique
+                setTimeout(() => {
+                    let responseText = "Je comprends votre préoccupation. Un conseiller vous répondra sous peu.";
+                    if (text.includes('bloqué')) {
+                        responseText = "Votre compte est actuellement bloqué pour des raisons de sécurité. Veuillez nous contacter au 1-800-123-4567 pour le débloquer.";
+                    } else if (text.includes('international')) {
+                        responseText = "Les virements internationaux prennent généralement 2 à 5 jours ouvrables. Vous pouvez suivre l'état de votre virement dans la section Historique des transactions.";
+                    }
+                    
+                    const responseElement = document.createElement('div');
+                    responseElement.className = 'message message-agent';
+                    responseElement.innerHTML = `
+                        <div class="message-content">${responseText}</div>
+                        <div class="message-time">${timeString}</div>
+                    `;
+                    
+                    chatMessages.appendChild(responseElement);
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                }, 1000);
+            }
+            
+            // Initialiser les animations
+            animatePageElements();
+        });
+    </script>
+</body>
+</html>
