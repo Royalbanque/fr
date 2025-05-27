@@ -1280,9 +1280,7 @@
         <main class="main-content">
             <!-- Page Tableau de bord -->
             <div class="page active" id="dashboard">
-                <div class="alert alert-danger">
-                    <i class="fas fa-exclamation-circle"></i>
-                    Ce compte est actuellement bloqué. Veuillez contacter le service client pour plus d'informations.
+               
                 </div>
 
                 <section class="account-summary">
@@ -1291,7 +1289,7 @@
                         <div class="balance-info">
                             <span class="label">Solde disponible</span>
                             <span class="amount">105 800 $ CA</span>
-                            <span class="status badge-danger">Compte bloqué</span>
+                            <span class="status badge-success">Compte actif</span>
                         </div>
                         <div class="account-holder">
                             <span class="label">Titulaire du compte</span>
@@ -1605,8 +1603,8 @@
                         <div class="info-item">
                             <div class="label">Statut du compte</div>
                             <div class="value account-status">
-                                <i class="fas fa-lock"></i>
-                                <span class="status status-blocked">Bloqué</span>
+                                <i class="fas fa-check-circle"></i>
+                                <span class="status status-active">Actif</span>
                             </div>
                         </div>
                         <div class="info-item">
@@ -2023,12 +2021,12 @@
                 notification.className = 'notification';
                 notification.innerHTML = `
                     <div class="notification-content">
-                        <i class="fas fa-exclamation-triangle"></i>
+                        <i class="fas fa-check-circle" style="color: var(--success-color);"></i>
                         <div>
-                            <h3>Compte bloqué</h3>
-                            <p>Votre compte est actuellement bloqué. Veuillez contacter le service client pour effectuer des opérations.</p>
-                            <button class="btn btn-primary" onclick="this.parentElement.parentElement.remove()">Compris</button>
-                            <a href="#" class="btn btn-outline nav-link" data-page="assistance">Contacter</a>
+                            <h3>Transaction en cours</h3>
+                            <p>Votre virement est en cours de traitement. Vous pouvez suivre son état dans l'historique des transactions.</p>
+                            <button class="btn btn-primary" onclick="this.parentElement.parentElement.parentElement.remove()">Compris</button>
+                            <a href="#" class="btn btn-outline nav-link" data-page="history">Voir l'historique</a>
                         </div>
                     </div>
                 `;
