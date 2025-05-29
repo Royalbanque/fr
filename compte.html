@@ -8,8 +8,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #003366; /* Bleu foncé RBC */
-            --secondary-color: #D4AF37; /* Or */
+            --primary-color: #003366;
+            --secondary-color: #D4AF37;
             --accent-color: #0056b3;
             --danger-color: #dc3545;
             --success-color: #28a745;
@@ -1324,7 +1324,7 @@
                     <div class="balance-card">
                         <div class="balance-info">
                             <span class="label">Solde disponible</span>
-                            <span class="amount">105 800 $ CA</span>
+                            <span class="amount">100 800 €</span>
                             <span class="status badge-success">Actif</span>
                         </div>
                         <div class="account-holder">
@@ -1339,7 +1339,7 @@
                     <h2><i class="fas fa-bolt"></i> Actions rapides</h2>
                     <div class="actions-grid">
                         <a href="#" class="action-card nav-link" data-page="transfer">
-                            <div class="icon"><i class="fas fa-plus-circle"></i></div>
+                            <div class="icon"><i class="fas fa-exchange-alt"></i></div>
                             <span>Nouveau virement</span>
                         </a>
                         <a href="#" class="action-card nav-link" data-page="history">
@@ -1360,22 +1360,29 @@
                 <section class="recent-transactions">
                     <h2><i class="fas fa-clock"></i> Dernières transactions</h2>
                     <div class="transactions-list">
+                        <div class="transaction-item sent">
+                            <div class="transaction-icon"><i class="fas fa-arrow-up"></i></div>
+                            <div class="transaction-details">
+                                <span class="description">Virement à Bertrand Saulgeot</span>
+                                <span class="date">30 mai 2025</span>
+                            </div>
+                            <div class="transaction-amount">-5 000 €</div>
+                        </div>
                         <div class="transaction-item received">
                             <div class="transaction-icon"><i class="fas fa-arrow-down"></i></div>
                             <div class="transaction-details">
                                 <span class="description">Reçu de Mohamed Abadou</span>
                                 <span class="date">21 mai 2025</span>
                             </div>
-                            <div class="transaction-amount">+32 500 $ CA</div>
+                            <div class="transaction-amount">+32 500 €</div>
                         </div>
                         <div class="transaction-item sent">
                             <div class="transaction-icon"><i class="fas fa-arrow-up"></i></div>
                             <div class="transaction-details">
-                                <span class="description">Virement à Hydro
--Québec</span>
+                                <span class="description">Virement à Hydro-Québec</span>
                                 <span class="date">10 mai 2025</span>
                             </div>
-                            <div class="transaction-amount">-1 250 $ CA</div>
+                            <div class="transaction-amount">-1 250 €</div>
                         </div>
                         <div class="transaction-item received">
                             <div class="transaction-icon"><i class="fas fa-arrow-down"></i></div>
@@ -1383,7 +1390,7 @@
                                 <span class="description">Dépôt direct - Salaire</span>
                                 <span class="date">1 mai 2025</span>
                             </div>
-                            <div class="transaction-amount">+5 800 $ CA</div>
+                            <div class="transaction-amount">+5 800 €</div>
                         </div>
                     </div>
                     <a href="#" class="view-all nav-link" data-page="history">Voir tout l'historique <i class="fas fa-chevron-right"></i></a>
@@ -1419,10 +1426,10 @@
                             <label for="amount-filter"><i class="fas fa-dollar-sign"></i> Montant</label>
                             <select id="amount-filter">
                                 <option>Tous les montants</option>
-                                <option>Moins de 500$</option>
-                                <option>500$ à 2 000$</option>
-                                <option>2 000$ à 10 000$</option>
-                                <option>Plus de 10 000$</option>
+                                <option>Moins de 500€</option>
+                                <option>500€ à 2 000€</option>
+                                <option>2 000€ à 10 000€</option>
+                                <option>Plus de 10 000€</option>
                             </select>
                         </div>
                         <button class="btn btn-primary"><i class="fas fa-search"></i> Appliquer</button>
@@ -1437,18 +1444,35 @@
                         <div class="col-status">Statut</div>
                     </div>
                     
+                    <div class="transaction-detail sent">
+                        <div class="col-date">30 mai 2025</div>
+                        <div class="col-description">
+                            <strong>Virement à Bertrand Saulgeot</strong>
+                            <small>FR25 2004 1000 0121 3856 2E02 060 • SWIFT: PSSTFRPPP</small>
+                        </div>
+                        <div class="col-amount">-5 000 €</div>
+                        <div class="col-status"><span class="badge-success">Réussi</span></div>
+                        <div class="transaction-more">
+                            <div class="more-details">
+                                <p><strong>Solde précédent :</strong> 105 800 €</p>
+                                <p><strong>Nouveau solde :</strong> 100 800 €</p>
+                                <p><strong>Référence :</strong> TRX-20250530-5678</p>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <div class="transaction-detail received">
                         <div class="col-date">21 mai 2025</div>
                         <div class="col-description">
                             <strong>Reçu de Mohamed Abadou</strong>
                             <small>UBA Banque Bamako •••• 6789</small>
                         </div>
-                        <div class="col-amount">+32 500 $ CA</div>
+                        <div class="col-amount">+32 500 €</div>
                         <div class="col-status"><span class="badge-success">Réussi</span></div>
                         <div class="transaction-more">
                             <div class="more-details">
-                                <p><strong>Solde précédent :</strong> 73 300 $ CA</p>
-                                <p><strong>Nouveau solde :</strong> 105 800 $ CA</p>
+                                <p><strong>Solde précédent :</strong> 73 300 €</p>
+                                <p><strong>Nouveau solde :</strong> 105 800 €</p>
                                 <p><strong>Référence :</strong> TRX-20230515-7890</p>
                             </div>
                         </div>
@@ -1460,12 +1484,12 @@
                             <strong>Virement à Hydro-Québec</strong>
                             <small>Paiement de facture •••• 3456</small>
                         </div>
-                        <div class="col-amount">-1 250 $ CA</div>
+                        <div class="col-amount">-1 250 €</div>
                         <div class="col-status"><span class="badge-success">Réussi</span></div>
                         <div class="transaction-more">
                             <div class="more-details">
-                                <p><strong>Solde précédent :</strong> 74 550 $ CA</p>
-                                <p><strong>Nouveau solde :</strong> 73 300 $ CA</p>
+                                <p><strong>Solde précédent :</strong> 74 550 €</p>
+                                <p><strong>Nouveau solde :</strong> 73 300 €</p>
                                 <p><strong>Référence :</strong> TRX-20230510-4567</p>
                             </div>
                         </div>
@@ -1477,30 +1501,13 @@
                             <strong>Dépôt direct - Salaire</strong>
                             <small>Entreprise XYZ •••• 1234</small>
                         </div>
-                        <div class="col-amount">+5 800 $ CA</div>
+                        <div class="col-amount">+5 800 €</div>
                         <div class="col-status"><span class="badge-success">Réussi</span></div>
                         <div class="transaction-more">
                             <div class="more-details">
-                                <p><strong>Solde précédent :</strong> 68 750 $ CA</p>
-                                <p><strong>Nouveau solde :</strong> 74 550 $ CA</p>
+                                <p><strong>Solde précédent :</strong> 68 750 €</p>
+                                <p><strong>Nouveau solde :</strong> 74 550 €</p>
                                 <p><strong>Référence :</strong> TRX-20230501-1234</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="transaction-detail sent">
-                        <div class="col-date">28 avril 2025</div>
-                        <div class="col-description">
-                            <strong>Virement à Bell Canada</strong>
-                            <small>Paiement de facture •••• 7890</small>
-                        </div>
-                        <div class="col-amount">-85 $ CA</div>
-                        <div class="col-status"><span class="badge-success">Réussi</span></div>
-                        <div class="transaction-more">
-                            <div class="more-details">
-                                <p><strong>Solde précédent :</strong> 68 835 $ CA</p>
-                                <p><strong>Nouveau solde :</strong> 68 750 $ CA</p>
-                                <p><strong>Référence :</strong> TRX-20230428-7890</p>
                             </div>
                         </div>
                     </div>
@@ -1536,15 +1543,15 @@
                         
                         <div class="form-group">
                             <label for="iban">IBAN/Numéro de compte</label>
-                            <input type="text" id="iban" placeholder="Ex: CA12 3456 7890 1234 5678 9012" required>
-                            <small class="form-hint">Format international (IBAN) ou numéro de compte canadien</small>
+                            <input type="text" id="iban" placeholder="Ex: FR25 2004 1000 0121 3856 2E02 060" required>
+                            <small class="form-hint">Format international (IBAN) ou numéro de compte</small>
                         </div>
                         
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="amount">Montant</label>
                                 <div class="input-with-symbol">
-                                    <span>$ CA</span>
+                                    <span>€</span>
                                     <input type="number" id="amount" placeholder="0,00" min="1" step="0.01" required>
                                 </div>
                             </div>
@@ -1646,11 +1653,11 @@
                         </div>
                         <div class="info-item">
                             <div class="label">Solde actuel</div>
-                            <div class="value">105 800 $ CA</div>
+                            <div class="value">100 800 €</div>
                         </div>
                         <div class="info-item">
                             <div class="label">IBAN</div>
-                            <div class="value">CA76 7890 1234 5678 9012 3456</div>
+                            <div class="value">FR76 7890 1234 5678 9012 3456</div>
                         </div>
                     </div>
                 </div>
@@ -1703,16 +1710,6 @@
                             </div>
                             <div class="faq-answer">
                                 <p>Les virements internationaux peuvent être suivis dans la section "Historique des transactions". Cliquez sur la transaction pour voir les détails. Les virements SWIFT disposent d'un numéro de référence unique que vous pouvez fournir à notre service client pour un suivi plus précis.</p>
-                            </div>
-                        </div>
-                        
-                        <div class="faq-item">
-                            <div class="faq-question">
-                                Quels sont les frais pour les virements internationaux ?
-                                <i class="fas fa-chevron-down"></i>
-                            </div>
-                            <div class="faq-answer">
-                                <p>Les frais varient selon le pays de destination et le montant transféré. En général, comptez entre 10$ CA et 50$ CA par transaction. Vous pouvez consulter notre grille tarifaire complète dans la section "Tarifs" de notre site web.</p>
                             </div>
                         </div>
                     </div>
@@ -1880,30 +1877,9 @@
                                             <td>Toronto, Canada</td>
                                             <td class="status-failed">Échoué</td>
                                         </tr>
-                                        <tr>
-                                            <td>21 mai 2025, 11:30 AM</td>
-                                            <td>Windows (Edge)</td>
-                                            <td>Montréal, Canada</td>
-                                            <td class="status-success">Réussi</td>
-                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
-                        </div>
-                        
-                        <div class="settings-section" id="notifications-section">
-                            <h2><i class="fas fa-bell"></i> Notifications</h2>
-                            <p>Section des notifications - à implémenter</p>
-                        </div>
-                        
-                        <div class="settings-section" id="privacy-section">
-                            <h2><i class="fas fa-lock"></i> Confidentialité</h2>
-                            <p>Section confidentialité - à implémenter</p>
-                        </div>
-                        
-                        <div class="settings-section" id="preferences-section">
-                            <h2><i class="fas fa-sliders-h"></i> Préférences</h2>
-                            <p>Section préférences - à implémenter</p>
                         </div>
                     </div>
                 </div>
@@ -2016,7 +1992,7 @@
             if (transferForm) {
                 transferForm.addEventListener('submit', function(e) {
                     e.preventDefault();
-                    showBlockedAccountMessage();
+                    showNotification('Virement en cours de traitement', 'Votre virement est en cours de traitement. Vous recevrez une confirmation par email.', 'success');
                 });
             }
             
@@ -2030,7 +2006,7 @@
             // Simulation de chargement du solde
             const balanceAmount = document.querySelector('.balance-info .amount');
             if (balanceAmount) {
-                animateValue(balanceAmount, 0, 105800, 1500);
+                animateValue(balanceAmount, 0, 100800, 1500);
             }
             
             // Animation du solde
@@ -2040,7 +2016,7 @@
                     if (!startTimestamp) startTimestamp = timestamp;
                     const progress = Math.min((timestamp - startTimestamp) / duration, 1);
                     const value = Math.floor(progress * (end - start) + start);
-                    element.textContent = formatCurrency(value) + ' $ CA';
+                    element.textContent = formatCurrency(value) + ' €';
                     if (progress < 1) {
                         window.requestAnimationFrame(step);
                     }
@@ -2052,18 +2028,35 @@
                 return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
             }
             
-            // Message de compte bloqué
-            function showBlockedAccountMessage() {
+            // Fonction de notification
+            function showNotification(title, message, type) {
                 const notification = document.createElement('div');
                 notification.className = 'notification';
+                
+                let icon = '';
+                let color = '';
+                
+                switch(type) {
+                    case 'success':
+                        icon = 'fa-check-circle';
+                        color = 'var(--success-color)';
+                        break;
+                    case 'error':
+                        icon = 'fa-exclamation-circle';
+                        color = 'var(--danger-color)';
+                        break;
+                    default:
+                        icon = 'fa-info-circle';
+                        color = 'var(--primary-color)';
+                }
+                
                 notification.innerHTML = `
                     <div class="notification-content">
-                        <i class="fas fa-check-circle" style="color: var(--success-color);"></i>
+                        <i class="fas ${icon}" style="color: ${color};"></i>
                         <div>
-                            <h3>Transaction en cours</h3>
-                            <p>Votre virement est en cours de traitement. Vous pouvez suivre son état dans l'historique des transactions.</p>
-                            <button class="btn btn-primary" onclick="this.parentElement.parentElement.parentElement.remove()">Compris</button>
-                            <a href="#" class="btn btn-outline nav-link" data-page="history">Voir l'historique</a>
+                            <h3>${title}</h3>
+                            <p>${message}</p>
+                            <button class="btn btn-primary" onclick="this.parentElement.parentElement.parentElement.remove()">OK</button>
                         </div>
                     </div>
                 `;
@@ -2073,6 +2066,11 @@
                 setTimeout(() => {
                     notification.classList.add('show');
                 }, 10);
+                
+                // Suppression automatique après 5 secondes
+                setTimeout(() => {
+                    notification.remove();
+                }, 5000);
             }
             
             // Chat simulé
